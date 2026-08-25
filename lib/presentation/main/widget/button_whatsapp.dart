@@ -33,7 +33,7 @@ InkWell buttonWhatsapp(
               ),
               child: const Row(
                 children: [
-                  Icon(
+                  FaIcon(
                     FontAwesomeIcons.whatsapp,
                     color: Colors.green,
                     size: 20,

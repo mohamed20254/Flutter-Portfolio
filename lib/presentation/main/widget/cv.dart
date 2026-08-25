@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portofilo/core/constant/app_color.dart';
+import 'package:portofilo/core/utils/url_luncher.dart';
 
 class CustomButtonCv extends StatelessWidget {
   final String title;
   final String dec;
-  final IconData icon;
+  final FaIconData icon;
   final Color color;
   final String textbuton;
   final VoidCallback ontap;
 
+  final bool iscv;
+
   const CustomButtonCv({
+    this.iscv = false,
     super.key,
     required this.title,
     required this.dec,
@@ -33,7 +38,7 @@ class CustomButtonCv extends StatelessWidget {
         children: [
           CircleAvatar(
             backgroundColor: color.withValues(alpha: 0.5),
-            child: Icon(icon),
+            child: FaIcon(icon),
           ),
           const SizedBox(height: 20),
           Text(title, style: Theme.of(context).textTheme.bodyMedium),
@@ -57,6 +62,27 @@ class CustomButtonCv extends StatelessWidget {
               style: Theme.of(context).textTheme.bodySmall!.copyWith(),
             ),
           ),
+          const SizedBox(height: 10),
+          iscv
+              ? ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 173, 122, 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(15),
+                  ),
+                ),
+                onPressed: () {
+                  UriLuncher.launchurl(
+                    "https://drive.google.com/file/d/1kJwoTAD4Lz9GnD1B3tdYtqbQPjp0X4Ut/view?usp=drive_link",
+                    context: context,
+                  );
+                },
+                child: Text(
+                  "    View    ",
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(),
+                ),
+              )
+              : const SizedBox(),
         ],
       ),
     );

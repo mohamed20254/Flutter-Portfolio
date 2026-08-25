@@ -48,9 +48,18 @@ class _CustomAnimatedSlideState extends State<CustomAnimatedSlide> {
                   : Matrix4.translationValues(0, 60, 0),
           child:
               _loaded
-                  ? widget
-                      .builder() // ⬅ يتبني بعد التحميل فقط
-                  : Container(height: 200), // placeholder
+                  ? widget.builder()
+                  : Container(
+                    constraints: const BoxConstraints(
+                      maxWidth: 100,
+                      maxHeight: 300,
+                    ),
+
+                    child: const Text(
+                      "wait...",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                  ), // placeholder
         ),
       ),
     );

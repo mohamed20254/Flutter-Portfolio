@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-import 'package:portofilo/presentation/main/screen/main_screen.dart';
 import 'package:portofilo/presentation/splach/splach_screen.dart';
-import 'package:routemaster/routemaster.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,9 +20,10 @@ class MyApp extends StatelessWidget {
 
       // splitScreenMode: true,
       builder:
-          (final context, final child) => MaterialApp.router(
+          (final context, final child) => MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Flutter portfilo',
+            home: const SplashView(),
             theme: ThemeData(
               brightness: Brightness.dark,
               cardColor: const Color(0xff101424),
@@ -74,43 +72,43 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
-            routerDelegate: RoutemasterDelegate(
-              routesBuilder: (final context) => Routing.routes,
-            ),
-            routeInformationParser: const RoutemasterParser(),
+            // routerDelegate: RoutemasterDelegate(
+            //   routesBuilder: (final context) => Routing.routes,
+            // ),
+            // routeInformationParser: const RoutemasterParser(),
             //   home: const MainScreen(),
           ),
     );
   }
 }
 
-class Routing {
-  static int? lastProjectId;
+// class Routing {
+//   static int? lastProjectId;
 
-  static final routes = RouteMap(
-    routes: {
-      '/': (_) => const MaterialPage(child: SplashView()),
-      '/main': (_) => const MaterialPage(child: MainScreen()),
-      // '/projects/:id': (final route) {
-      //   final id = int.parse(route.pathParameters['id']!);
-      //   lastProjectId = id;
-      //   final project = projects[id];
-      //   return MaterialPage(child: AllImagesScreen(images: project.images));
-      // },
+//   static final routes = RouteMap(
+//     routes: {
+//       '/': (_) => const MaterialPage(child: SplashView()),
+//       '/main': (_) => const MaterialPage(child: MainScreen()),
+//       // '/projects/:id': (final route) {
+//       //   final id = int.parse(route.pathParameters['id']!);
+//       //   lastProjectId = id;
+//       //   final project = projects[id];
+//       //   return MaterialPage(child: AllImagesScreen(images: project.images));
+//       // },
 
-      // '/full_image/:id': (final info) {
-      //   final imageIndex = int.parse(info.pathParameters['id']!); //
-      //   final project = projects[lastProjectId!]; //
-      //   final imagePath = project.images[imageIndex]; //
+//       // '/full_image/:id': (final info) {
+//       //   final imageIndex = int.parse(info.pathParameters['id']!); //
+//       //   final project = projects[lastProjectId!]; //
+//       //   final imagePath = project.images[imageIndex]; //
 
-      //   return MaterialPage(
-      //     child: FullImageView(
-      //       imagePath: imagePath,
-      //       tag: "image_$imageIndex",
-      //       backgroundColor: Colors.black,
-      //     ),
-      //   );
-      // },
-    },
-  );
-}
+//       //   return MaterialPage(
+//       //     child: FullImageView(
+//       //       imagePath: imagePath,
+//       //       tag: "image_$imageIndex",
+//       //       backgroundColor: Colors.black,
+//       //     ),
+//       //   );
+//       // },
+//     },
+//   );
+// }

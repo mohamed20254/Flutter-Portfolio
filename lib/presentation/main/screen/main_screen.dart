@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:portofilo/core/constant/app_color.dart';
 import 'package:portofilo/core/constant/app_iimage.dart';
 import 'package:portofilo/core/resposive/responsive.dart';
 import 'package:portofilo/core/utils/url_luncher.dart';
-import 'package:portofilo/presentation/about/screen/about_me.dart'
-    deferred as about_me;
+import 'package:portofilo/presentation/about/screen/about_me.dart';
 
 import 'package:portofilo/presentation/home/screen/home_screen.dart';
 import 'package:portofilo/presentation/main/widget/button_whatsapp.dart';
 import 'package:portofilo/presentation/main/widget/custom_animation.dart';
-import 'package:portofilo/presentation/main/widget/cv.dart' deferred as cv;
-import 'package:portofilo/presentation/main/widget/row_socil.dart'
-    deferred as socil;
+import 'package:portofilo/presentation/main/widget/cv.dart';
+import 'package:portofilo/presentation/main/widget/row_socil.dart';
 import 'package:portofilo/presentation/main/widget/section_widget.dart';
 import 'package:portofilo/presentation/skills/screen/my_skills_screen.dart';
 import 'package:portofilo/presentation/projects/screen/project_screen.dart';
@@ -59,7 +56,7 @@ class _MainScreenState extends State<MainScreen> {
       final box = context.findRenderObject() as RenderBox;
       final position = box.localToGlobal(Offset.zero).dy;
 
-      if (position <= 100) {
+      if (position <= 100 && currentIndex != index) {
         setState(() {
           currentIndex = index;
         });
@@ -118,9 +115,8 @@ class _MainScreenState extends State<MainScreen> {
                       child: CustomAnimatedSlide(
                         key: apout,
                         valueKey: const ValueKey("apout_meKey"),
-                        builder:
-                            () => about_me.AboutMe(size: size, apoutey: apout),
-                        onLoad: () => about_me.loadLibrary(),
+                        builder: () => AboutMe(size: size, apoutey: apout),
+                        onLoad: () async {},
                       ),
                     ),
 
@@ -166,12 +162,12 @@ class _MainScreenState extends State<MainScreen> {
                         ? SliverToBoxAdapter(
                           child: CustomAnimatedSlide(
                             valueKey: const ValueKey("row_socil"),
-                            onLoad: () => socil.loadLibrary(),
+                            onLoad: () async {},
                             builder:
                                 // ignore: prefer_const_constructors
                                 () => Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [socil.RowSocil()],
+                                  children: [RowSocil()],
                                 ),
                           ),
                         )
@@ -212,7 +208,7 @@ class _MainScreenState extends State<MainScreen> {
       children: [
         CustomAnimatedSlide(
           valueKey: const ValueKey("cv_key"),
-          onLoad: () => cv.loadLibrary(),
+          onLoad: () async {},
           builder:
               () => Column(
                 children: [
@@ -223,14 +219,20 @@ class _MainScreenState extends State<MainScreen> {
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                   const SizedBox(height: 30),
-                  cv.CustomButtonCv(
+                  CustomButtonCv(
+                    iscv: true,
                     title: "Download CV",
                     dec:
                         "Get my complete  resume with detailed experience,\n skills, and achievements",
-                    icon: Icons.download,
+                    icon: FontAwesomeIcons.download,
                     color: const Color.fromARGB(255, 47, 108, 241),
-                    textbuton: "Download Now",
-                    ontap: () {},
+                    textbuton: "Download",
+                    ontap: () {
+                      UriLuncher.launchurl(
+                        "https://drive.google.com/uc?export=download&id=1kJwoTAD4Lz9GnD1B3tdYtqbQPjp0X4Ut",
+                        context: context,
+                      );
+                    },
                   ),
                 ],
               ),
@@ -238,10 +240,10 @@ class _MainScreenState extends State<MainScreen> {
         const SizedBox(height: 20),
         Responsive.isTablet(context)
             ? CustomAnimatedSlide(
-              onLoad: () => cv.loadLibrary(),
+              onLoad: () async {},
               valueKey: const ValueKey("button Whatsapp"),
               builder:
-                  () => cv.CustomButtonCv(
+                  () => CustomButtonCv(
                     title: "WhatsApp Chat",
                     dec:
                         "Let's discuss your project requirements and  how I \n can help you achieve your goals",

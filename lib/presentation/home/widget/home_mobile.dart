@@ -30,7 +30,7 @@ Column homeMobile(final BuildContext context, final Size size) {
       },
     ),
     SocilModel(
-      icon: Icons.mail,
+      icon: FontAwesomeIcons.envelope,
       onTap: () {
         UriLuncher.launchEmail(context);
       },
@@ -127,7 +127,7 @@ Column homeMobile(final BuildContext context, final Size size) {
             socils.length,
             (final index) => IconButton(
               onPressed: socils[index].onTap,
-              icon: Icon(socils[index].icon, size: 25),
+              icon: FaIcon(socils[index].icon, size: 25),
               alignment: Alignment.center,
             ),
           ),

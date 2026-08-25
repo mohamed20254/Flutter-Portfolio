@@ -31,7 +31,7 @@ class RowSocil extends StatelessWidget {
         },
       ),
       SocilModel(
-        icon: Icons.mail,
+        icon: FontAwesomeIcons.envelope,
         onTap: () {
           UriLuncher.launchEmail(context);
         },
@@ -58,7 +58,7 @@ class RowSocil extends StatelessWidget {
             ),
             child: IconButton(
               onPressed: socils[index].onTap,
-              icon: Icon(socils[index].icon, size: 25),
+              icon: FaIcon(socils[index].icon, size: 25),
               alignment: Alignment.center,
             ),
           ),

@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:portofilo/presentation/home/widget/animated_intro.dart';
+import 'package:portofilo/presentation/main/screen/main_screen.dart'
+    deferred as mainscreen;
 import 'package:portofilo/presentation/splach/animated_loading_text.dart';
-import 'package:routemaster/routemaster.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -14,8 +15,12 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () {
-      Routemaster.of(context).replace('/main');
+    Timer(const Duration(seconds: 3), () async {
+      await mainscreen.loadLibrary();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (final context) => mainscreen.MainScreen()),
+      );
     });
   }
 

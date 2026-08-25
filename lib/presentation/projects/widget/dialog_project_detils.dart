@@ -190,7 +190,7 @@ class _DialogProjectDetilsState extends State<DialogProjectDetils> {
               style: Theme.of(context).textTheme.labelLarge,
             ),
 
-            const Icon(FontAwesomeIcons.github, color: Colors.grey),
+            const FaIcon(FontAwesomeIcons.github, color: Colors.grey),
           ],
         ),
       ),

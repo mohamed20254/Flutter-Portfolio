@@ -46,14 +46,11 @@ class UriLuncher {
   }
 
   static Future<void> openlinkedIn(final context) async {
-    _openApp(
-      context,
-      "https://www.linkedin.com/in/mohamed-fawzy-081830356?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
-    );
+    _openApp(context, "https://www.linkedin.com/in/mohamed-fawzy-973786396");
   }
 
   static Future<void> openGithup(final context) async {
-    _openApp(context, "https://github.com/mohamed20254");
+    _openApp(context, "https://github.com/Mohamed-F-Dev");
   }
 
   static Future<void> _openApp(final context, final link) async {

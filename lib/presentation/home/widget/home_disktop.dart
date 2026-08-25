@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portofilo/presentation/home/screen/image_potofio.dart';
+import 'package:portofilo/presentation/home/widget/animated_intro.dart';
 
 import '../../../core/constant/app_color.dart';
 import '../../../core/constant/app_iimage.dart';
@@ -82,7 +83,7 @@ Padding homeDisdtop(final BuildContext context, final Size size) {
                     },
                   ),
                   soacile(
-                    icon: Icons.mail,
+                    icon: FontAwesomeIcons.envelope,
                     onTap: () {
                       UriLuncher.launchEmail(context);
                     },
@@ -100,7 +101,7 @@ Padding homeDisdtop(final BuildContext context, final Size size) {
           ),
         ),
         const SizedBox(width: 100),
-        const Imageprofile(),
+        const AnimatedImageContainer(height: 300, width: 300),
       ],
     ),
   );
@@ -108,10 +109,10 @@ Padding homeDisdtop(final BuildContext context, final Size size) {
 
 Padding soacile({
   required final void Function()? onTap,
-  required final IconData icon,
+  required final FaIconData icon,
 }) {
   return Padding(
     padding: const EdgeInsets.only(right: 8.0),
-    child: IconButton(onPressed: onTap, icon: Icon(icon, size: 30)),
+    child: IconButton(onPressed: onTap, icon: FaIcon(icon, size: 30)),
   );
 }

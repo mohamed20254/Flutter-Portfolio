@@ -77,7 +77,7 @@ class AnimatedImageContainerState extends State<AnimatedImageContainer>
 
                   shape: BoxShape.circle,
                   // borderRadius: BorderRadius.circular(30),
-                  image: DecorationImage(image: AssetImage(AppIimage.profile2)),
+                  image: DecorationImage(image: AssetImage(AppIimage.mohamed)),
                 ),
               ),
             ),
