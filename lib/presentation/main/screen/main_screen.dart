@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:icon_plus/icon_plus.dart';
+import 'package:portofilo/core/constant/app_color.dart';
 import 'package:portofilo/core/constant/app_iimage.dart';
 import 'package:portofilo/core/resposive/responsive.dart';
 import 'package:portofilo/core/utils/url_luncher.dart';
@@ -29,39 +30,43 @@ class _MainScreenState extends State<MainScreen> {
   final GlobalKey skills = GlobalKey();
   final GlobalKey project = GlobalKey();
   late GlobalKey<ScaffoldState> _scafoldkey;
-  int currentIndex = 0;
+  final ValueNotifier<int> _currentIndex = ValueNotifier(0);
   final ValueNotifier<bool> isHovered = ValueNotifier(false);
 
   @override
   void initState() {
-    _scafoldkey = GlobalKey<ScaffoldState>();
-    _scrollController.addListener(() {
-      // double scrollOffset = _scrollController.offset;
-
-      final homeContext = home.currentContext;
-      final aboutContext = apout.currentContext;
-      final skillsContext = skills.currentContext;
-      final projectsContext = project.currentContext;
-
-      _currentCondition(homeContext, 0);
-      _currentCondition(aboutContext, 1);
-      _currentCondition(skillsContext, 2);
-      _currentCondition(projectsContext, 3);
-    });
     super.initState();
+    _scafoldkey = GlobalKey<ScaffoldState>();
+    _scrollController.addListener(_handleScroll);
   }
 
-  void _currentCondition(final context, final int index) {
-    if (context != null) {
-      final box = context.findRenderObject() as RenderBox;
-      final position = box.localToGlobal(Offset.zero).dy;
+  void _handleScroll() {
+    var nextIndex = 0;
+    final sectionKeys = [home, apout, skills, project];
 
-      if (position <= 100 && currentIndex != index) {
-        setState(() {
-          currentIndex = index;
-        });
+    for (var index = 0; index < sectionKeys.length; index++) {
+      final sectionContext = sectionKeys[index].currentContext;
+      final renderObject = sectionContext?.findRenderObject();
+      if (renderObject is RenderBox &&
+          renderObject.hasSize &&
+          renderObject.localToGlobal(Offset.zero).dy <= 100) {
+        nextIndex = index;
       }
     }
+
+    if (nextIndex != _currentIndex.value) {
+      _currentIndex.value = nextIndex;
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
+    _currentIndex.dispose();
+    isHovered.dispose();
+    super.dispose();
   }
 
   @override
@@ -76,9 +81,19 @@ class _MainScreenState extends State<MainScreen> {
         child: Column(
           children: [
             Responsive.isDesktop(context)
-                ? Align(
-                  alignment: Alignment.topCenter,
-                  child: _headers(size, context, isHovered, _scafoldkey),
+                ? ValueListenableBuilder<int>(
+                  valueListenable: _currentIndex,
+                  builder:
+                      (final context, final currentIndex, final child) =>
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: _headers(
+                              size,
+                              context,
+                              currentIndex,
+                              isHovered,
+                            ),
+                          ),
                 )
                 : const SizedBox(),
             Expanded(
@@ -99,16 +114,15 @@ class _MainScreenState extends State<MainScreen> {
                           size,
                           context,
                           isHovered,
-                          _scafoldkey,
                         ),
                       ),
 
                     SliverToBoxAdapter(child: HomeScreen(homekey: home)),
                     SliverToBoxAdapter(
                       child:
-                          Responsive.isDesktop(context)
-                              ? const SizedBox(height: 200)
-                              : const SizedBox(height: 100),
+                          SizedBox(
+                            height: Responsive.isMobile(context) ? 48 : 88,
+                          ),
                     ),
 
                     SliverToBoxAdapter(
@@ -116,63 +130,66 @@ class _MainScreenState extends State<MainScreen> {
                         key: apout,
                         valueKey: const ValueKey("apout_meKey"),
                         builder: () => AboutMe(size: size, apoutey: apout),
-                        onLoad: () async {},
                       ),
                     ),
 
                     SliverToBoxAdapter(
                       child:
-                          Responsive.isDesktop(context)
-                              ? const SizedBox(height: 200)
-                              : const SizedBox(height: 100),
+                          SizedBox(
+                            height: Responsive.isMobile(context) ? 48 : 88,
+                          ),
                     ),
 
                     SliverToBoxAdapter(
-                      child: KeyedSubtree(
-                        key: const ValueKey('mySkillsScreen'),
-                        child: MySkillsScreen(
-                          skillKey: skills,
-                          ismobile: ismobile,
+                      child: _sectionSurface(
+                        context,
+                        KeyedSubtree(
+                          key: const ValueKey('mySkillsScreen'),
+                          child: MySkillsScreen(
+                            skillKey: skills,
+                            ismobile: ismobile,
+                          ),
                         ),
                       ),
                     ),
 
                     SliverToBoxAdapter(
                       child:
-                          Responsive.isDesktop(context)
-                              ? const SizedBox(height: 200)
-                              : const SizedBox(height: 100),
+                          SizedBox(
+                            height: Responsive.isMobile(context) ? 48 : 88,
+                          ),
                     ),
 
                     SliverToBoxAdapter(
-                      child: ProjectScreen(projectgey: project),
+                      child: _sectionSurface(
+                        context,
+                        ProjectScreen(projectgey: project),
+                      ),
                     ),
 
                     SliverToBoxAdapter(
                       child:
                           ismobile
-                              ? const SizedBox(height: 50)
-                              : const SizedBox(height: 100),
+                              ? const SizedBox(height: 40)
+                              : const SizedBox(height: 64),
                     ),
 
                     SliverToBoxAdapter(child: _buildCv(context)),
 
-                    const SliverToBoxAdapter(child: SizedBox(height: 50)),
+                    const SliverToBoxAdapter(child: SizedBox(height: 32)),
                     Responsive.isTablet(context)
                         ? SliverToBoxAdapter(
                           child: CustomAnimatedSlide(
                             valueKey: const ValueKey("row_socil"),
-                            onLoad: () async {},
                             builder:
-                                // ignore: prefer_const_constructors
-                                () => Row(
+                                () => const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [RowSocil()],
                                 ),
                           ),
                         )
                         : const SliverToBoxAdapter(child: SizedBox()),
-                    const SliverToBoxAdapter(child: SizedBox(height: 30)),
+                    const SliverToBoxAdapter(child: SizedBox(height: 22)),
                     SliverToBoxAdapter(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -188,11 +205,11 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                     ),
 
-                    const SliverToBoxAdapter(child: SizedBox(height: 30)),
+                    const SliverToBoxAdapter(child: SizedBox(height: 22)),
                     const SliverToBoxAdapter(
                       child: Divider(endIndent: 100, indent: 100),
                     ),
-                    const SliverToBoxAdapter(child: SizedBox(height: 50)),
+                    const SliverToBoxAdapter(child: SizedBox(height: 32)),
                   ],
                 ),
               ),
@@ -203,12 +220,28 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  Widget _sectionSurface(final BuildContext context, final Widget child) {
+    final isMobile = Responsive.isMobile(context);
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: isMobile ? 0 : 8),
+      padding: EdgeInsets.symmetric(vertical: isMobile ? 18 : 28),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor.withValues(alpha: 0.22),
+        border: Border.symmetric(
+          horizontal: BorderSide(
+            color: AppColor.navyBlue.withValues(alpha: 0.12),
+          ),
+        ),
+      ),
+      child: child,
+    );
+  }
+
   Column _buildCv(final BuildContext context) {
     return Column(
       children: [
         CustomAnimatedSlide(
           valueKey: const ValueKey("cv_key"),
-          onLoad: () async {},
           builder:
               () => Column(
                 children: [
@@ -224,7 +257,7 @@ class _MainScreenState extends State<MainScreen> {
                     title: "Download CV",
                     dec:
                         "Get my complete  resume with detailed experience,\n skills, and achievements",
-                    icon: FontAwesomeIcons.download,
+                    icon: Bootstrap.download,
                     color: const Color.fromARGB(255, 47, 108, 241),
                     textbuton: "Download",
                     ontap: () {
@@ -240,14 +273,13 @@ class _MainScreenState extends State<MainScreen> {
         const SizedBox(height: 20),
         Responsive.isTablet(context)
             ? CustomAnimatedSlide(
-              onLoad: () async {},
               valueKey: const ValueKey("button Whatsapp"),
               builder:
                   () => CustomButtonCv(
                     title: "WhatsApp Chat",
                     dec:
                         "Let's discuss your project requirements and  how I \n can help you achieve your goals",
-                    icon: FontAwesomeIcons.whatsapp,
+                    icon: Bootstrap.whatsapp,
                     color: Colors.green,
                     textbuton: "Start chat",
                     ontap: () {
@@ -264,14 +296,13 @@ class _MainScreenState extends State<MainScreen> {
     final Size size,
     final context,
     final ishaverd,
-    final scfoldkey,
   ) {
     return SizedBox(
       height: 50.h,
       child: Row(
         children: [
           Image.asset(AppIimage.triange, fit: BoxFit.contain, height: 30.h),
-          _drower(scfoldkey),
+          _drower(),
 
           const Spacer(),
           buttonWhatsapp(size, context, ishaverd),
@@ -285,8 +316,8 @@ class _MainScreenState extends State<MainScreen> {
   Padding _headers(
     final Size size,
     final BuildContext context,
+    final int currentIndex,
     final ishaverd,
-    final scfoldkey,
   ) {
     return Padding(
       padding: EdgeInsets.all(4.0.w),
@@ -327,54 +358,55 @@ class _MainScreenState extends State<MainScreen> {
   //buttomWhatsapp==========
 
   //Drwer=================
-  SizedBox _drower(final GlobalKey<ScaffoldState> scfoldkey) {
-    return SizedBox(
-      child: IconButton(
-        onPressed: () {
-          showMenu(
-            color: Theme.of(context).cardColor,
-            initialValue: 1,
-            context: context,
-            position: const RelativeRect.fromLTRB(50, 50, 100, 100),
-            items: [
-              PopupMenuItem<int>(
-                value: 1,
-                child: const Text("home"),
-                onTap: () {
-                  final context = home.currentContext;
-                  scroilCoindion(context);
-                },
-              ),
-              PopupMenuItem<int>(
-                value: 2,
-                child: const Text("Apout"),
-                onTap: () {
-                  final context = apout.currentContext;
-                  scroilCoindion(context);
-                },
-              ),
-              PopupMenuItem<int>(
-                value: 3,
-                child: const Text("skills"),
-                onTap: () {
-                  final context = skills.currentContext;
-                  scroilCoindion(context);
-                },
-              ),
-
-              PopupMenuItem<int>(
-                value: 4,
-                child: const Text("My Work"),
-                onTap: () {
-                  final context = project.currentContext;
-                  scroilCoindion(context);
-                },
-              ),
-            ],
-          );
-        },
-        icon: const Icon(Icons.menu, size: 30),
-      ),
+  Widget _drower() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        PopupMenuButton<int>(
+          tooltip: 'Open navigation',
+          icon: const Icon(Icons.menu, size: 27),
+          onSelected: (final index) {
+            final sectionKeys = [home, apout, skills, project];
+            scroilCoindion(sectionKeys[index].currentContext);
+          },
+          itemBuilder:
+              (final context) => const [
+                PopupMenuItem(
+                  value: 0,
+                  child: ListTile(
+                    dense: true,
+                    leading: Icon(Icons.home_outlined),
+                    title: Text('Home'),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 1,
+                  child: ListTile(
+                    dense: true,
+                    leading: Icon(Icons.person_outline),
+                    title: Text('About me'),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 2,
+                  child: ListTile(
+                    dense: true,
+                    leading: Icon(Icons.auto_awesome_outlined),
+                    title: Text('Skills'),
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 3,
+                  child: ListTile(
+                    dense: true,
+                    leading: Icon(Icons.work_outline),
+                    title: Text('My work'),
+                  ),
+                ),
+              ],
+        ),
+        Text('Menu', style: Theme.of(context).textTheme.labelLarge),
+      ],
     );
   }
 }

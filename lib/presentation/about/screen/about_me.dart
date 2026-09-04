@@ -2,17 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:portofilo/core/constant/app_color.dart';
 import 'package:portofilo/core/resposive/responsive.dart';
 
-class AboutMe extends StatefulWidget {
+class AboutMe extends StatelessWidget {
   final GlobalKey apoutey;
   const AboutMe({super.key, required this.size, required this.apoutey});
 
   final Size size;
 
-  @override
-  State<AboutMe> createState() => _AboutMeState();
-}
-
-class _AboutMeState extends State<AboutMe> {
   @override
   Widget build(final BuildContext context) {
     final ismobile = Responsive.isMobile(context);
@@ -31,6 +26,7 @@ class _AboutMeState extends State<AboutMe> {
               : const EdgeInsets.symmetric(vertical: 50, horizontal: 100),
       decoration: BoxDecoration(
         color: const Color(0xff101424),
+        borderRadius: BorderRadius.circular(18),
         border: BoxBorder.all(color: AppColor.navyBlue.withValues(alpha: 0.2)),
       ),
 
@@ -38,7 +34,7 @@ class _AboutMeState extends State<AboutMe> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ismobile
-              ? SizedBox(height: widget.size.height * 0.01)
+              ? SizedBox(height: size.height * 0.01)
               : const SizedBox(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -64,8 +60,11 @@ class _AboutMeState extends State<AboutMe> {
           const SizedBox(height: 20),
           SelectableText.rich(
             selectionColor: Colors.blueAccent.withValues(alpha: 0.5),
-            const TextSpan(
-              style: TextStyle(fontSize: 20, color: Colors.grey, height: 1.5),
+            TextSpan(
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: Colors.grey,
+                height: 1.5,
+              ),
               children: [
                 TextSpan(text: 'I am a '),
                 TextSpan(
@@ -116,9 +115,9 @@ class _AboutMeState extends State<AboutMe> {
               ],
             ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 24),
           const Divider(),
-          ismobile ? const SizedBox(height: 15) : const SizedBox(height: 40),
+          ismobile ? const SizedBox(height: 15) : const SizedBox(height: 28),
           GridView(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,

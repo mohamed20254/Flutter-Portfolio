@@ -1,15 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class CustomAnimatedSlide extends StatefulWidget {
-  final Future<void> Function() onLoad;
+  final Future<void> Function()? onLoad;
   final Widget Function() builder;
   final ValueKey valueKey;
 
   const CustomAnimatedSlide({
     required this.valueKey,
     super.key,
-    required this.onLoad,
+    this.onLoad,
     required this.builder,
   });
 
@@ -19,24 +21,44 @@ class CustomAnimatedSlide extends StatefulWidget {
 
 class _CustomAnimatedSlideState extends State<CustomAnimatedSlide> {
   bool _visible = false;
-  bool _loaded = false;
+  late bool _loaded;
+
+  @override
+  void initState() {
+    super.initState();
+    _loaded = widget.onLoad == null;
+  }
+
+  void _handleVisibility(final VisibilityInfo info) {
+    if (!mounted || _visible || info.visibleFraction <= 0.15) {
+      return;
+    }
+
+    _visible = true;
+    if (widget.onLoad == null) {
+      setState(() {});
+      return;
+    }
+
+    setState(() {});
+    unawaited(_loadContent());
+  }
+
+  Future<void> _loadContent() async {
+    await widget.onLoad!();
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _loaded = true;
+    });
+  }
 
   @override
   Widget build(final BuildContext context) {
     return VisibilityDetector(
       key: widget.valueKey,
-      onVisibilityChanged: (final info) async {
-        if (!_visible && info.visibleFraction > 0.15) {
-          _visible = true;
-
-          if (!_loaded) {
-            await widget.onLoad();
-            _loaded = true;
-          }
-
-          if (mounted) setState(() {});
-        }
-      },
+      onVisibilityChanged: _handleVisibility,
       child: AnimatedOpacity(
         opacity: _visible && _loaded ? 1 : 0,
         duration: const Duration(milliseconds: 600),
@@ -49,17 +71,7 @@ class _CustomAnimatedSlideState extends State<CustomAnimatedSlide> {
           child:
               _loaded
                   ? widget.builder()
-                  : Container(
-                    constraints: const BoxConstraints(
-                      maxWidth: 100,
-                      maxHeight: 300,
-                    ),
-
-                    child: const Text(
-                      "wait...",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ), // placeholder
+                  : const SizedBox(height: 200),
         ),
       ),
     );

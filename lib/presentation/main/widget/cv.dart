@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portofilo/core/constant/app_color.dart';
 import 'package:portofilo/core/utils/url_luncher.dart';
 
 class CustomButtonCv extends StatelessWidget {
   final String title;
   final String dec;
-  final FaIconData icon;
+  final IconData icon;
   final Color color;
   final String textbuton;
   final VoidCallback ontap;
@@ -38,7 +37,7 @@ class CustomButtonCv extends StatelessWidget {
         children: [
           CircleAvatar(
             backgroundColor: color.withValues(alpha: 0.5),
-            child: FaIcon(icon),
+            child: Icon(icon),
           ),
           const SizedBox(height: 20),
           Text(title, style: Theme.of(context).textTheme.bodyMedium),

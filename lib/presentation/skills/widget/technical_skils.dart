@@ -61,7 +61,7 @@ class _TechnicalSkilsState extends State<TechnicalSkils>
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 50),
+        const SizedBox(height: 28),
         Row(
           children: [
             Expanded(

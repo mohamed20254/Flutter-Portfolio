@@ -25,7 +25,7 @@ class Sections extends StatefulWidget {
 }
 
 class _SectionsState extends State<Sections> {
-  List<String> catogares = ["home", "Apout", "Skills", "project"];
+  final List<String> catogares = ["Home", "About", "Skills", "Projects"];
 
   @override
   Widget build(final BuildContext context) {
@@ -82,12 +82,19 @@ class ContanerSection extends StatefulWidget {
 
 class _ContanerSectionState extends State<ContanerSection> {
   final ValueNotifier<bool> ishaverd = ValueNotifier(false);
+
+  @override
+  void dispose() {
+    ishaverd.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(final BuildContext context) {
     return MouseRegion(
       onEnter: (_) => ishaverd.value = true,
       onExit: (_) => ishaverd.value = false,
-      child: ValueListenableBuilder(
+      child: ValueListenableBuilder<bool>(
         valueListenable: ishaverd,
         builder: (final context, final value, final child) {
           return Column(

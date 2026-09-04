@@ -1,8 +1,8 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:portofilo/presentation/home/widget/animated_intro.dart';
-import 'package:portofilo/presentation/main/screen/main_screen.dart'
-    deferred as mainscreen;
+import 'package:portofilo/presentation/main/screen/main_screen.dart';
 import 'package:portofilo/presentation/splach/animated_loading_text.dart';
 
 class SplashView extends StatefulWidget {
@@ -12,16 +12,26 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
+  Timer? _navigationTimer;
+
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () async {
-      await mainscreen.loadLibrary();
+    _navigationTimer = Timer(const Duration(seconds: 3), () {
+      if (!mounted) {
+        return;
+      }
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (final context) => mainscreen.MainScreen()),
+        MaterialPageRoute(builder: (final context) => const MainScreen()),
       );
     });
+  }
+
+  @override
+  void dispose() {
+    _navigationTimer?.cancel();
+    super.dispose();
   }
 
   @override

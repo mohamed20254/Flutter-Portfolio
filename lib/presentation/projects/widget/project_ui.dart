@@ -47,8 +47,8 @@ class ProjectUi extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisExtent: 400,
-              crossAxisSpacing: 30,
+              mainAxisExtent: ismobile ? 370 : 390,
+              crossAxisSpacing: 24,
 
               crossAxisCount:
                   ismobile
@@ -57,7 +57,7 @@ class ProjectUi extends StatelessWidget {
                       ? 2
                       : 3,
 
-              mainAxisSpacing: 20,
+              mainAxisSpacing: 24,
             ),
             itemCount: projectsUi.length,
             itemBuilder: (final context, final index) {

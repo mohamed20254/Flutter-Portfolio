@@ -14,19 +14,19 @@ class Imageprofile extends StatefulWidget {
 
 class _ImageprofileState extends State<Imageprofile> {
   Timer? _timer;
-  double blurRadius = 0.0;
+  bool _isHighlighted = false;
 
   @override
   void initState() {
-    startAnimation();
     super.initState();
+    startAnimation();
   }
 
-  Future<void> startAnimation() async {
+  void startAnimation() {
     _timer = Timer.periodic(const Duration(seconds: 3), (_) {
-      setState(() {
-        blurRadius = blurRadius == 0 ? 10 : 0.0;
-      });
+      if (mounted) {
+        setState(() => _isHighlighted = !_isHighlighted);
+      }
     });
   }
 
@@ -41,24 +41,24 @@ class _ImageprofileState extends State<Imageprofile> {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       curve: Curves.easeInOut,
-      duration: const Duration(seconds: 3),
-      height: 362 + blurRadius,
-      width: 362 + blurRadius,
+      duration: const Duration(milliseconds: 900),
+      height: 362,
+      width: 362,
 
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(
           colors: [
-            AppColor.orange.withValues(alpha: blurRadius == 0 ? 0.9 : 0.1),
-            Colors.blueAccent.withValues(alpha: blurRadius == 0 ? 0.9 : 0.1),
+            AppColor.orange.withValues(alpha: _isHighlighted ? 0.1 : 0.9),
+            Colors.blueAccent.withValues(alpha: _isHighlighted ? 0.1 : 0.9),
           ],
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.blueAccent.withValues(alpha: 0.3),
             blurStyle: BlurStyle.solid,
-            blurRadius: blurRadius,
-            spreadRadius: blurRadius,
+            blurRadius: _isHighlighted ? 10 : 0,
+            spreadRadius: _isHighlighted ? 10 : 0,
           ),
         ],
       ),
@@ -79,6 +79,7 @@ class _ImageprofileState extends State<Imageprofile> {
                 image: DecorationImage(
                   image: AssetImage(AppIimage.mohamed),
                   fit: BoxFit.cover,
+                  filterQuality: FilterQuality.medium,
                 ),
               ),
               foregroundDecoration: const BoxDecoration(

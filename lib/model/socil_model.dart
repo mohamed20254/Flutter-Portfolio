@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:icon_plus/icon_plus.dart';
 
 class SocilModel {
-  final FaIconData icon;
+  final String icon;
   final void Function()? onTap;
 
   SocilModel({required this.icon, required this.onTap});

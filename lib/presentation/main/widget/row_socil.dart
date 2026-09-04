@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:icon_plus/icon_plus.dart';
 import 'package:portofilo/core/constant/app_color.dart';
 
 import '../../../core/utils/url_luncher.dart';
@@ -9,35 +9,66 @@ class RowSocil extends StatelessWidget {
   const RowSocil({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final List<SocilModel> socils = [
+      // SocilModel(
+      //   icon: Bootstrap.github,
+      //   onTap: () {
+      //     UriLuncher.openGithup(context);
+      //   },
+      // ),
+
+      // SocilModel(
+      //   icon: Bootstrap.facebook,
+      //   onTap: () {
+      //     UriLuncher.openFacebook(context);
+      //   },
+      // ),
+      // SocilModel(
+      //   icon: Bootstrap.linkedin,
+      //   onTap: () {
+      //     UriLuncher.openlinkedIn(context);
+      //   },
+      // ),
+      // SocilModel(
+      //   icon: Bootstrap.envelope,
+      //   onTap: () {
+      //     UriLuncher.launchEmail(context);
+      //   },
+      // ),
+      // SocilModel(
+      //   icon: Bootstrap.telegram,
+      //   onTap: () {
+      //     UriLuncher.openTelegram(context);
+      //   },
+      // ),
       SocilModel(
-        icon: FontAwesomeIcons.github,
+        icon: Brands.github,
         onTap: () {
           UriLuncher.openGithup(context);
         },
       ),
 
       SocilModel(
-        icon: FontAwesomeIcons.facebook,
+        icon: Brands.facebook,
         onTap: () {
           UriLuncher.openFacebook(context);
         },
       ),
       SocilModel(
-        icon: FontAwesomeIcons.linkedinIn,
+        icon: Brands.linkedin,
         onTap: () {
           UriLuncher.openlinkedIn(context);
         },
       ),
       SocilModel(
-        icon: FontAwesomeIcons.envelope,
+        icon: Brands.mail,
         onTap: () {
           UriLuncher.launchEmail(context);
         },
       ),
       SocilModel(
-        icon: FontAwesomeIcons.telegram,
+        icon: Brands.telegram_app,
         onTap: () {
           UriLuncher.openTelegram(context);
         },
@@ -58,7 +89,7 @@ class RowSocil extends StatelessWidget {
             ),
             child: IconButton(
               onPressed: socils[index].onTap,
-              icon: FaIcon(socils[index].icon, size: 25),
+              icon: Brand(socils[index].icon, size: 25),
               alignment: Alignment.center,
             ),
           ),

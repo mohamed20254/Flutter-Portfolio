@@ -29,20 +29,26 @@ class _ArraowUpAnimateState extends State<ArraowUpAnimate>
 
   @override
   Widget build(final BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-
-      builder: (final context, final child) {
-        return Transform.translate(
-          offset: Offset(0, 6 * _controller.value),
-          child: Column(
-            children: [
-              const Icon(Icons.keyboard_double_arrow_up, color: Colors.grey),
-              Image.asset(AppIimage.image, height: 30),
-            ],
-          ),
-        );
-      },
+    return RepaintBoundary(
+      child: AnimatedBuilder(
+        animation: _controller,
+        child: Column(
+          children: [
+            const Icon(Icons.keyboard_double_arrow_up, color: Colors.grey),
+            Image.asset(
+              AppIimage.image,
+              height: 30,
+              filterQuality: FilterQuality.medium,
+            ),
+          ],
+        ),
+        builder: (final context, final child) {
+          return Transform.translate(
+            offset: Offset(0, 6 * _controller.value),
+            child: child,
+          );
+        },
+      ),
     );
   }
 }

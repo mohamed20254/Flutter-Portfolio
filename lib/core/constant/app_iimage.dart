@@ -20,4 +20,5 @@ class AppIimage {
   static const String ecommercui = "$_key/project/ecommerc_ui$webp";
   static const String recipui = "$_key/project/recip_ui$webp";
   static const String travil = "$_key/project/travil_app$webp";
+  static const String listaHub = "$_key/project/lista_hub$webp";
 }

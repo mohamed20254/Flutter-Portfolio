@@ -7,17 +7,79 @@ class ProjectModel {
   final String dec;
   final String? github;
   final List<String>? skils;
+  final String? googlePlay;
+  final bool isLive;
+  final List<String>? concept;
   ProjectModel({
     required this.title2,
     required this.image,
     required this.title1,
     required this.dec,
+    this.googlePlay,
+    this.isLive = false,
     this.github,
     this.skils,
+    this.concept,
   });
 }
 
 List<ProjectModel> projects = [
+  ProjectModel(
+    title2: "_App",
+    image: AppIimage.listaHub,
+    title1: "Lista Hub",
+    dec:
+        "Lista Hub is a smart city services app that brings local businesses, services, and offers together in one place, helping users easily discover what they need and find nearby services and places.",
+
+    skils: [
+      "Dart",
+      "Flutter",
+      "BLoC / Cubit",
+      "Hive",
+      "Crisp Chat",
+      "Location Services",
+      "Di GetIt",
+      "GoRouter",
+      "Localization",
+      "Firebase Authentication",
+      "Cloud Firestore",
+      "Firebase Cloud Messaging",
+      "Cloud Functions",
+      "Firebase Storage",
+      "Crashlytics",
+      "Remote Config",
+      "Hosting",
+      "Deployment",
+      "Flutter Animation",
+      "Admin Dashboard Flutter Web",
+      "Git / GitHub",
+    ],
+    concept: [
+      "Clean & Modular Architecture",
+      "Scalable / Reusable / Immutable",
+      "Dependency Injection",
+      "Pagination",
+      "Search & Filtering (Debounce)",
+      "Caching",
+      "Error Handling",
+      " Validation",
+      "Responsive Design",
+      "Localization",
+      "Deep Linking",
+      "Performance Optimization",
+      "Push Notifications",
+      "Image Optimization",
+      "Clean Architecture",
+      "Offline Support",
+      "Real-time Data",
+      "Isolates",
+      "Firebase Integration",
+    ],
+    github: "https://github.com/Mohamed-F-Dev/Lista-Hub#-about",
+    isLive: true,
+    googlePlay:
+        "https://play.google.com/store/apps/details?id=com.mohamedfawzy.futurehub",
+  ),
   ProjectModel(
     title2: "_App",
     image: AppIimage.novaFilx,

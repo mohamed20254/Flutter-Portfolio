@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:portofilo/presentation/main/screen/main_screen.dart';
 import 'package:portofilo/presentation/splach/splach_screen.dart';
 
 void main() async {
@@ -19,65 +20,67 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
 
       // splitScreenMode: true,
-      builder:
-          (final context, final child) => MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Flutter portfilo',
-            home: const SplashView(),
-            theme: ThemeData(
-              brightness: Brightness.dark,
-              cardColor: const Color(0xff101424),
-              scaffoldBackgroundColor: const Color.fromARGB(255, 10, 17, 31),
-              textTheme: GoogleFonts.abhayaLibreTextTheme().copyWith(
-                titleLarge: const TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w800,
-                ),
-                titleMedium: const TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w700,
-                ),
-                titleSmall: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w600,
-                ),
-                bodyLarge: const TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w300,
-                ),
-                bodyMedium: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w300,
-                ),
-                bodySmall: const TextStyle(
-                  height: 0.0,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-                labelLarge: const TextStyle(fontSize: 15),
-                labelMedium: const TextStyle(
-                  fontSize: 8,
-                  letterSpacing: 1,
-                  fontWeight: FontWeight.w700,
-                ),
-                labelSmall: const TextStyle(
-                  fontSize: 6,
-                  letterSpacing: 1,
-                  fontWeight: FontWeight.w700,
-                ),
-                displaySmall: const TextStyle(
-                  fontSize: 5,
-                  letterSpacing: 0.3,
-                  fontWeight: FontWeight.w700,
-                ),
+      builder: (final context, final child) {
+        final isMobile = MediaQuery.sizeOf(context).width <= 600;
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter portfilo',
+          home: const MainScreen(),
+          theme: ThemeData(
+            brightness: Brightness.dark,
+            cardColor: const Color(0xff101424),
+            scaffoldBackgroundColor: const Color.fromARGB(255, 10, 17, 31),
+            textTheme: GoogleFonts.abhayaLibreTextTheme().copyWith(
+              titleLarge: TextStyle(
+                fontSize: isMobile ? 32 : 40,
+                fontWeight: FontWeight.w800,
+              ),
+              titleMedium: TextStyle(
+                fontSize: isMobile ? 26 : 32,
+                fontWeight: FontWeight.w700,
+              ),
+              titleSmall: TextStyle(
+                fontSize: isMobile ? 23 : 28,
+                fontWeight: FontWeight.w600,
+              ),
+              bodyLarge: TextStyle(
+                fontSize: isMobile ? 18 : 25,
+                fontWeight: FontWeight.w300,
+              ),
+              bodyMedium: TextStyle(
+                fontSize: isMobile ? 16 : 20,
+                fontWeight: FontWeight.w300,
+              ),
+              bodySmall: TextStyle(
+                height: 1.2,
+                fontSize: isMobile ? 14 : 18,
+                fontWeight: FontWeight.w600,
+              ),
+              labelLarge: TextStyle(fontSize: isMobile ? 14 : 15),
+              labelMedium: const TextStyle(
+                fontSize: 8,
+                letterSpacing: 1,
+                fontWeight: FontWeight.w700,
+              ),
+              labelSmall: const TextStyle(
+                fontSize: 6,
+                letterSpacing: 1,
+                fontWeight: FontWeight.w700,
+              ),
+              displaySmall: const TextStyle(
+                fontSize: 5,
+                letterSpacing: 0.3,
+                fontWeight: FontWeight.w700,
               ),
             ),
-            // routerDelegate: RoutemasterDelegate(
-            //   routesBuilder: (final context) => Routing.routes,
-            // ),
-            // routeInformationParser: const RoutemasterParser(),
-            //   home: const MainScreen(),
           ),
+        );
+      },
+      // routerDelegate: RoutemasterDelegate(
+      //   routesBuilder: (final context) => Routing.routes,
+      // ),
+      // routeInformationParser: const RoutemasterParser(),
+      //   home: const MainScreen(),
     );
   }
 }

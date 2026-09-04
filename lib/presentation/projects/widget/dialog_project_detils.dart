@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portofilo/core/constant/app_color.dart';
+import 'package:icon_plus/icon_plus.dart';
 import 'package:portofilo/core/resposive/responsive.dart';
 import 'package:portofilo/core/utils/url_luncher.dart';
 import 'package:portofilo/model/project_model.dart';
@@ -18,6 +18,9 @@ class _DialogProjectDetilsState extends State<DialogProjectDetils> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) {
+        return;
+      }
       scale = 1;
       setState(() {});
     });
@@ -69,6 +72,13 @@ class _DialogProjectDetilsState extends State<DialogProjectDetils> {
                           ).textTheme.labelLarge!.copyWith(color: Colors.grey),
                         ),
                         const SizedBox(height: 15),
+                        if (widget.project.concept != null) ...[
+                          Text(
+                            "Skills",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const SizedBox(height: 10),
+                        ],
                         Wrap(
                           spacing: 8,
                           runSpacing: 10,
@@ -90,21 +100,72 @@ class _DialogProjectDetilsState extends State<DialogProjectDetils> {
                             ),
                           ),
                         ),
+                        if (widget.project.concept case final concept?) ...[
+                          const SizedBox(height: 10),
+                          Text(
+                            "Concepts",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const SizedBox(height: 10),
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 10,
+                            children: List.generate(
+                              concept.length,
+                              (final index) => Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.orange.withValues(alpha: 0.2),
+
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+
+                                child: Text(
+                                  concept[index],
+                                  style: Theme.of(context).textTheme.labelLarge!
+                                      .copyWith(color: Colors.orange),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
 
                         Padding(
                           padding: const EdgeInsets.all(13),
                           child: Align(
                             alignment: Alignment.centerRight,
-                            child: _buildButtongithub(
-                              ontap: () {
-                                UriLuncher.launchurl(
-                                  widget.project.github,
-                                  context: context,
-                                );
-                              },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                _buildButtongithub(
+                                  ontap: () {
+                                    UriLuncher.launchurl(
+                                      widget.project.github,
+                                      context: context,
+                                    );
+                                  },
+                                ),
+
+                                if (widget.project.isLive &&
+                                    !Responsive.isMobile(context)) ...[
+                                  const SizedBox(width: 10),
+                                  _buildButtonGooglePlay(context),
+                                ],
+                              ],
                             ),
                           ),
                         ),
+                        if (widget.project.isLive &&
+                            Responsive.isMobile(context)) ...[
+                          const SizedBox(width: 10),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [_buildButtonGooglePlay(context)],
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),
@@ -115,6 +176,28 @@ class _DialogProjectDetilsState extends State<DialogProjectDetils> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  ElevatedButton _buildButtonGooglePlay(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Theme.of(context).cardColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(12),
+          side: BorderSide(color: AppColor.navyBlue.withValues(alpha: 0.5)),
+        ),
+      ),
+      onPressed: () {
+        UriLuncher.launchurl(widget.project.googlePlay, context: context);
+      },
+      child: Row(
+        children: [
+          Brand(Brands.google_play, size: 25),
+          const SizedBox(width: 10),
+          Text("Google PLay ", style: Theme.of(context).textTheme.labelLarge),
+        ],
       ),
     );
   }
@@ -146,7 +229,8 @@ class _DialogProjectDetilsState extends State<DialogProjectDetils> {
           widget.project.image,
           height: Responsive.isDesktop(context) ? 350 : 200,
           fit: BoxFit.cover,
-          filterQuality: FilterQuality.high,
+          cacheWidth: Responsive.isDesktop(context) ? 1050 : 600,
+          filterQuality: FilterQuality.medium,
         ),
       ),
     );
@@ -171,28 +255,25 @@ class _DialogProjectDetilsState extends State<DialogProjectDetils> {
     );
   }
 
-  ConstrainedBox _buildButtongithub({required final VoidCallback ontap}) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 180),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).cardColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadiusGeometry.circular(12),
-            side: BorderSide(color: AppColor.navyBlue.withValues(alpha: 0.5)),
+  ElevatedButton _buildButtongithub({required final VoidCallback ontap}) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Theme.of(context).cardColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(12),
+          side: BorderSide(color: AppColor.navyBlue.withValues(alpha: 0.5)),
+        ),
+      ),
+      onPressed: ontap,
+      child: Row(
+        children: [
+          Brand(Brands.github, size: 28),
+          const SizedBox(width: 10),
+          Text(
+            "Check on Github ",
+            style: Theme.of(context).textTheme.labelLarge,
           ),
-        ),
-        onPressed: ontap,
-        child: Row(
-          children: [
-            Text(
-              "Check on Github ",
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-
-            const FaIcon(FontAwesomeIcons.github, color: Colors.grey),
-          ],
-        ),
+        ],
       ),
     );
   }

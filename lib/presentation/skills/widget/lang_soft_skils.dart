@@ -63,7 +63,7 @@ class _LangSoftSkilsState extends State<LangSoftSkils>
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 50),
+        const SizedBox(height: 28),
         _builldLang(context),
         const SizedBox(height: 35),
         Text(

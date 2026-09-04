@@ -37,7 +37,7 @@ class Project extends StatelessWidget {
           style: Theme.of(context).textTheme.labelLarge,
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 40),
+        const SizedBox(height: 28),
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal:
@@ -51,15 +51,15 @@ class Project extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisExtent: 400,
+              mainAxisExtent: ismobile ? 370 : 390,
               crossAxisCount:
                   ismobile
                       ? 1
                       : Responsive.isTablet(context)
                       ? 2
                       : 3,
-              crossAxisSpacing: 30,
-              mainAxisSpacing: 30,
+              crossAxisSpacing: 24,
+              mainAxisSpacing: 24,
             ),
             itemCount: projects.length,
             itemBuilder: (final context, final index) {

@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:portofilo/core/resposive/responsive.dart';
 import 'package:portofilo/model/skils.dart';
 import 'package:portofilo/presentation/main/widget/custom_animation.dart';
-import 'package:portofilo/presentation/skills/widget/lang_soft_skils.dart'
-    deferred as softskils;
-import 'package:portofilo/presentation/skills/widget/technical_skils.dart'
-    deferred as techincal;
+import 'package:portofilo/presentation/skills/widget/lang_soft_skils.dart';
+import 'package:portofilo/presentation/skills/widget/technical_skils.dart';
 
 class MySkillsScreen extends StatefulWidget {
   final GlobalKey skillKey;
@@ -39,19 +37,17 @@ class _MySkillsScreenState extends State<MySkillsScreen>
         children: [
           CustomAnimatedSlide(
             valueKey: const ValueKey("techincal_Skils"),
-            onLoad: () => techincal.loadLibrary(),
             builder:
-                () => techincal.TechnicalSkils(
+                () => TechnicalSkils(
                   ismobile: ismobile,
                   skillsList: skillsList,
                 ),
           ),
 
-          const SizedBox(height: 100),
+          SizedBox(height: Responsive.isMobile(context) ? 48 : 64),
           CustomAnimatedSlide(
             valueKey: const ValueKey("soft_skils"),
-            onLoad: () => softskils.loadLibrary(),
-            builder: () => softskils.LangSoftSkils(),
+            builder: () => LangSoftSkils(),
           ),
         ],
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:icon_plus/icon_plus.dart';
 import '../../../core/constant/app_color.dart';
 import '../../../core/utils/url_luncher.dart';
 
@@ -33,8 +33,8 @@ InkWell buttonWhatsapp(
               ),
               child: const Row(
                 children: [
-                  FaIcon(
-                    FontAwesomeIcons.whatsapp,
+                  Icon(
+                    Bootstrap.whatsapp,
                     color: Colors.green,
                     size: 20,
                   ),
